@@ -42,7 +42,19 @@ module.exports = {
     'react/prop-types': 'off',
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
-    'no-unused-vars': 'off',
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: [
+          '**/vite.config.{js,ts}',
+          '**/*.test.{js,ts,jsx,tsx}',
+          '**/setupTests.{js,ts}',
+        ],
+        optionalDependencies: false,
+        peerDependencies: false,
+      },
+    ],
+    'no-unused-vars': 'on',
     '@typescript-eslint/no-unused-vars': ['warn'],
   },
 };
