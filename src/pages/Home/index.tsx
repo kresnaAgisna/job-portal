@@ -1,5 +1,7 @@
+import Text from '../../components/atom/Text';
+
 function Home() {
-  return <div>Home</div>;
+  return <Text size={48}>Home</Text>;
 }
 
 export default Home;

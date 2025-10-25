@@ -349,3 +349,18 @@ template {
 [hidden] {
   display: none;
 }
+
+/* MUI Reset */
+
+.MuiTypography-root,
+.MuiButton-root,
+.MuiInputBase-root,
+.MuiFormLabel-root,
+.MuiFormHelperText-root,
+.MuiChip-label,
+.MuiTab-root,
+.MuiBreadcrumbs-ol,
+.MuiDialogTitle-root,
+.MuiDialogContentText-root {
+  font-family: 'Nunito Sans', sans-serif !important;
+}
