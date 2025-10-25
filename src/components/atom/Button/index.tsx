@@ -3,6 +3,7 @@ import {
   ButtonProps as MUIButtonProps,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Colors } from '../../../constants/color';
 
 type ColorVariant = 'primary' | 'secondary' | 'white';
 type SizeVariant = 'small' | 'medium' | 'large';
@@ -17,22 +18,36 @@ const StyledButton = styled(MUIButton)<CustomButtonProps>(({
   colorVariant = 'primary',
   sizeVariant = 'medium',
 }) => {
-  const colors = {
+  // Color mapping based on design tokens
+  const colorMap = {
     primary: {
-      background: '#01959F',
-      color: '#FFFFFF',
+      background: Colors.primary.main,
+      text: Colors.neutral[10],
+      hover: Colors.primary.hover,
+      pressed: Colors.primary.pressed,
+      focus: Colors.primary.focus,
+      border: Colors.primary.border,
     },
     secondary: {
-      background: '#FBC037',
-      color: '#404040',
+      background: Colors.secondary.main,
+      text: Colors.neutral[90],
+      hover: Colors.secondary.hover,
+      pressed: Colors.secondary.pressed,
+      focus: Colors.secondary.focus,
+      border: Colors.secondary.border,
     },
     white: {
-      background: '#FFFFFF',
-      color: '#1D1F20',
+      background: Colors.neutral[10],
+      text: Colors.neutral[100],
+      hover: Colors.neutral[30],
+      pressed: Colors.neutral[40],
+      focus: Colors.primary.focus,
+      border: Colors.neutral[50],
     },
   }[colorVariant];
 
-  const sizes = {
+  // Size mapping
+  const sizeMap = {
     small: {
       height: 28,
       padding: '4px 16px',
@@ -53,13 +68,26 @@ const StyledButton = styled(MUIButton)<CustomButtonProps>(({
     fontWeight: 400,
     fontFamily: 'Nunito Sans, sans-serif',
     textTransform: 'none',
-    backgroundColor: colors.background,
-    color: colors.color,
-    height: sizes.height,
-    padding: sizes.padding,
+    backgroundColor: colorMap.background,
+    color: colorMap.text,
+    border: `1px solid ${colorMap.border}`,
+    height: sizeMap.height,
+    padding: sizeMap.padding,
+    transition: 'all 0.2s ease',
+
     '&:hover': {
-      backgroundColor: colors.background,
-      opacity: 0.9,
+      backgroundColor: colorMap.hover,
+    },
+    '&:active': {
+      backgroundColor: colorMap.pressed,
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${colorMap.focus}`,
+      outlineOffset: 2,
+    },
+    '&:disabled': {
+      opacity: 0.5,
+      cursor: 'not-allowed',
     },
   };
 });
