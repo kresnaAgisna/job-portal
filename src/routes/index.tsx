@@ -9,7 +9,7 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
-        handle: { title: 'Home' },
+        handle: { title: 'Job Postings' },
       },
     ],
   },

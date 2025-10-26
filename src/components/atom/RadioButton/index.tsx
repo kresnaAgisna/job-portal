@@ -1,5 +1,4 @@
-import { Radio, RadioProps, Stack } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Radio, RadioProps, Stack, styled } from '@mui/material';
 import { Colors } from '../../../constants/color';
 
 const StyledRadio = styled(Radio)(() => ({

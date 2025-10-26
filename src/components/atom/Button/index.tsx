@@ -1,8 +1,8 @@
 import {
   Button as MUIButton,
   ButtonProps as MUIButtonProps,
+  styled,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { Colors } from '../../../constants/color';
 
 type ColorVariant = 'primary' | 'secondary' | 'white';

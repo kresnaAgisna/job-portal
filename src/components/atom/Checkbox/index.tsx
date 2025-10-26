@@ -1,5 +1,4 @@
-import { Checkbox, CheckboxProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Checkbox, CheckboxProps, styled } from '@mui/material';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { Colors } from '../../../constants/color';
 

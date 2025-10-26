@@ -1,14 +1,14 @@
 // src/layouts/AfterAuthLayout.tsx
 import { Outlet, useMatches } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
-import { Stack } from '@mui/material';
+import { Stack, styled } from '@mui/material';
 import { RouteHandle } from '../../types/router';
 import Text from '../../components/atom/Text';
 import { Colors } from '../../constants/color';
+import CustomScrollbar from '../../components/atom/CustomScrollbar';
 
 const Container = styled(Stack)({
-  width: '100vw',
-  height: '100vh',
+  height: 'calc(100vh - 64px)',
+  boxSizing: 'border-box',
 });
 
 const Navbar = styled(Stack)({
@@ -19,6 +19,8 @@ const Navbar = styled(Stack)({
   justifyContent: 'space-between',
   alignItems: 'center',
   borderBottom: `1px solid ${Colors.neutral[40]}`,
+  position: 'sticky',
+  boxSizing: 'border-box',
 });
 
 export default function AfterAuthLayout() {
@@ -27,13 +29,22 @@ export default function AfterAuthLayout() {
   const title = current?.handle?.title ?? 'Default Title';
 
   return (
-    <Container>
+    <>
       <Navbar>
         <Text size={20} bold>
           {title}
         </Text>
       </Navbar>
-      <Outlet />
-    </Container>
+      <CustomScrollbar
+        style={{
+          height: 'calc(100vh - 64px)',
+          overflowX: 'hidden',
+        }}
+      >
+        <Container>
+          <Outlet />
+        </Container>
+      </CustomScrollbar>
+    </>
   );
 }
