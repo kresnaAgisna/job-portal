@@ -29,7 +29,11 @@ const CreateJobCard = () => {
           Create jobs, invite, and hire with ease
         </Text>
       </Stack>
-      <Button sizeVariant="large">Create a new job</Button>
+      <Button sizeVariant="large">
+        <Text size={16} bold>
+          Create a new job
+        </Text>
+      </Button>
     </CardContainer>
   );
 };

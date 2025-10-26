@@ -35,7 +35,6 @@ const StyledTextInput = styled(InputBase, {
     boxSizing: 'border-box',
     backgroundColor: Colors.neutral[10],
     WebkitFontSmoothing: 'antialiased',
-
     '& input::placeholder': {
       color: placeholderColor || Colors.neutral[60],
       opacity: 1,

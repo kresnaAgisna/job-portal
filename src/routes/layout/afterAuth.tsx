@@ -1,7 +1,7 @@
 // src/layouts/AfterAuthLayout.tsx
 import { Outlet, useMatches } from 'react-router-dom';
 import { Stack, styled } from '@mui/material';
-import { RouteHandle } from '../../types/router';
+import { RouteHandle } from '../../global/types/router';
 import Text from '../../components/atom/Text';
 import { Colors } from '../../constants/color';
 import CustomScrollbar from '../../components/atom/CustomScrollbar';

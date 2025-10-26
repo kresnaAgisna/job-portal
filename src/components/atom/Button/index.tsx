@@ -18,7 +18,6 @@ const StyledButton = styled(MUIButton)<CustomButtonProps>(({
   colorVariant = 'primary',
   sizeVariant = 'medium',
 }) => {
-  // Color mapping based on design tokens
   const colorMap = {
     primary: {
       background: Colors.primary.main,
@@ -46,7 +45,6 @@ const StyledButton = styled(MUIButton)<CustomButtonProps>(({
     },
   }[colorVariant];
 
-  // Size mapping
   const sizeMap = {
     small: {
       height: 28,
@@ -65,6 +63,7 @@ const StyledButton = styled(MUIButton)<CustomButtonProps>(({
   return {
     width: '100%',
     borderRadius: 8,
+    gap: 10,
     fontWeight: 400,
     fontFamily: 'Nunito Sans, sans-serif',
     textTransform: 'none',
