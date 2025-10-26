@@ -1,12 +1,18 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home';
+import AfterAuthLayout from './layout/afterAuth';
 
-export default function AppRoutes() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
+const router = createBrowserRouter([
+  {
+    element: <AfterAuthLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+        handle: { title: 'Home' },
+      },
+    ],
+  },
+]);
+
+export default router;

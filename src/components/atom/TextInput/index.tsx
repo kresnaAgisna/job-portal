@@ -16,6 +16,7 @@ const StyledTextInput = styled('input')<TextInputProps>(
     borderRadius: 8,
     borderWidth: 2,
     borderStyle: 'solid',
+    gap: 8,
     borderColor: borderColor || Colors.neutral[40],
     padding: '8px 16px',
     fontFamily: 'Nunito Sans, sans-serif',

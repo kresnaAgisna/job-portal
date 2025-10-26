@@ -1,19 +1,20 @@
 import { Stack } from '@mui/material';
 import Text from '../../components/atom/Text';
 import Button from '../../components/atom/Button';
+import CheckBox from '../../components/atom/Checkbox';
+import TextInput from '../../components/atom/TextInput';
+import { Colors } from '../../constants/color';
 
 function Home() {
   return (
-    <Stack>
-      <Text size={48}>Home</Text>
-      <Button
-        sx={{
-          width: '48px',
-        }}
-      >
-        Button
-      </Button>
-    </Stack>
+    <Stack
+      sx={{
+        height: '100vh',
+        width: '100vw',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    ></Stack>
   );
 }
 
