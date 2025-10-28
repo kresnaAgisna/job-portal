@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import AfterAuthLayout from './layout/afterAuth';
 import Register from '../pages/Register';
 import BeforeAuthLayout from './layout/beforeAuth';
+import Login from '../pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -12,13 +13,17 @@ const router = createBrowserRouter([
         path: '/register',
         element: <Register />,
       },
+      {
+        path: '/login',
+        element: <Login />,
+      },
     ],
   },
   {
     element: <AfterAuthLayout />,
     children: [
       {
-        path: '/',
+        path: '/job-posting',
         element: <Home />,
         handle: { title: 'Job Postings' },
       },
@@ -26,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Navigate to="/" replace />,
+    element: <Navigate to="/job-posting" replace />,
   },
 ]);
 

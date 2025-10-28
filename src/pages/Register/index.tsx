@@ -1,5 +1,5 @@
 import { Stack, styled } from '@mui/material';
-import { email, z } from 'zod';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Logo from './assets/logo.svg?react';

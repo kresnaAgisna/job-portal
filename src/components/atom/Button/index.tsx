@@ -90,6 +90,13 @@ const StyledButton = styled(MUIButton)<CustomButtonProps>(({
       opacity: 0.5,
       cursor: 'not-allowed',
     },
+    '& .MuiButton-startIcon': {
+      margin: '0 !important',
+      padding: '0 !important',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   };
 });
 
