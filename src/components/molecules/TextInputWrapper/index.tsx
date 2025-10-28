@@ -6,8 +6,7 @@ import { Colors } from '../../../constants/color';
 interface TextInputWrapperProps {
   children: React.ReactNode;
   label: string;
-  errorMessage?: string;
-  errorMessageStyle?: CSSProperties;
+  bottomDescription?: React.ReactNode;
 }
 
 const Container = styled(Stack)({
@@ -17,8 +16,7 @@ const Container = styled(Stack)({
 const TextInputWrapper: React.FC<TextInputWrapperProps> = ({
   children,
   label,
-  errorMessage,
-  errorMessageStyle,
+  bottomDescription,
 }) => {
   return (
     <Container>
@@ -26,11 +24,7 @@ const TextInputWrapper: React.FC<TextInputWrapperProps> = ({
         {label}
       </Text>
       {children}
-      {errorMessage ? (
-        <Text size={12} sx={{ ...errorMessageStyle }}>
-          {errorMessage}
-        </Text>
-      ) : null}
+      {bottomDescription ? bottomDescription : null}
     </Container>
   );
 };

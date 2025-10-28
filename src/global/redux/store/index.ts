@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import registerSlice from '../../../pages/Register/registerSlice';
 
 export const store = configureStore({
@@ -7,6 +8,8 @@ export const store = configureStore({
   },
 });
 
-// Type helpers
+// 🔹 Type helpers
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();

@@ -14,14 +14,17 @@
     "@emotion/styled": "^11.14.1",
     "@fontsource/nunito-sans": "^5.2.7",
     "@heroicons/react": "^2.2.0",
+    "@hookform/resolvers": "^5.2.2",
     "@mui/material": "^7.3.4",
     "@reduxjs/toolkit": "^2.9.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-hook-form": "^7.65.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.4",
     "react-scrollbars-custom": "^4.1.1",
-    "simplebar-react": "^3.3.2"
+    "simplebar-react": "^3.3.2",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/node": "^24.6.0",

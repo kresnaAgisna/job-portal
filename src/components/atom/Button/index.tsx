@@ -1,6 +1,7 @@
 import {
   Button as MUIButton,
   ButtonProps as MUIButtonProps,
+  CircularProgress,
   styled,
 } from '@mui/material';
 import { Colors } from '../../../constants/color';
@@ -12,6 +13,7 @@ interface CustomButtonProps extends Omit<MUIButtonProps, 'color' | 'size'> {
   colorVariant?: ColorVariant;
   sizeVariant?: SizeVariant;
   bold?: boolean;
+  loading?: boolean;
 }
 
 const StyledButton = styled(MUIButton)<CustomButtonProps>(({
@@ -95,14 +97,32 @@ export default function Button({
   colorVariant = 'primary',
   sizeVariant = 'medium',
   bold = false,
+  loading = false,
+  children,
   ...props
 }: CustomButtonProps) {
+  const spinnerSizeMap = {
+    small: 16,
+    medium: 20,
+    large: 24,
+  };
   return (
     <StyledButton
       colorVariant={colorVariant}
       sizeVariant={sizeVariant}
       sx={{ fontWeight: bold ? 700 : 400 }}
+      disabled={props.disabled || loading}
       {...props}
-    />
+    >
+      {loading ? (
+        <CircularProgress
+          size={spinnerSizeMap[sizeVariant]}
+          thickness={5}
+          color="inherit"
+        />
+      ) : (
+        children
+      )}
+    </StyledButton>
   );
 }
