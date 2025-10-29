@@ -17,16 +17,17 @@ const ToggleButton = styled(Button)<{ active?: boolean; disabled?: boolean }>(
     height: 32,
     padding: '4px 12px',
     borderRadius: 16,
-    border: `1px solid ${disabled ? Colors.neutral[40] : active ? Colors.primary.main : Colors.neutral[40]}`,
+    border: `1px solid ${active ? Colors.primary.main : Colors.neutral[40]}`,
     color: disabled
-      ? Colors.neutral[60]
+      ? Colors.neutral[40]
       : active
         ? Colors.primary.main
         : Colors.neutral[90],
     textTransform: 'none',
     minWidth: 'auto',
+    backgroundColor: disabled ? Colors.neutral[30] : 'transparent',
     '&:hover': {
-      backgroundColor: disabled ? 'transparent' : 'rgba(0,0,0,0.04)',
+      backgroundColor: disabled ? 'transparent' : Colors.neutral[30],
     },
   }),
 );

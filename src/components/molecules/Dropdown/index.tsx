@@ -12,7 +12,8 @@ type Option = {
 
 interface DropdownProps {
   options: Option[];
-  initialValue?: Option;
+  value?: Option;
+  onChange?: (option: Option) => void;
   width?: number | string;
   sx?: object;
 }
@@ -60,16 +61,16 @@ const StyledMenuItem = styled(MenuItem)<{
 
 const Dropdown: React.FC<DropdownProps> = ({
   options,
-  initialValue,
+  value,
+  onChange,
   width = '100%',
   sx = {},
 }) => {
-  const [selected, setSelected] = useState<Option>(initialValue ?? options[0]);
-
-  // anchorEl still used for placement — but we capture width separately
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorWidth, setAnchorWidth] = useState<number | null>(null);
   const open = Boolean(anchorEl);
+
+  const selected = value ?? options[0];
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const el = e.currentTarget;
@@ -77,15 +78,15 @@ const Dropdown: React.FC<DropdownProps> = ({
     setAnchorWidth(el.offsetWidth || el.getBoundingClientRect().width || null);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleSelect = (option: Option) => {
     if (!option.disabled) {
-      setSelected(option);
-      handleClose();
+      onChange?.(option); // notify parent
+      setAnchorEl(null);
     }
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (

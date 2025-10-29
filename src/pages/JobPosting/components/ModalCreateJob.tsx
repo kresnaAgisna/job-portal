@@ -1,4 +1,3 @@
-// src/components/ModalCreateJob.tsx
 import React from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,32 +18,84 @@ interface ModalCreateJobProps {
 
 const toggleOptionSchema = z.enum(['mandatory', 'optional', 'off']);
 
-const newJobSchema = z.object({
-  fullName: toggleOptionSchema,
-  profilePicture: toggleOptionSchema,
-  gender: toggleOptionSchema,
-  domicile: toggleOptionSchema,
-  email: toggleOptionSchema,
-  phoneNumber: toggleOptionSchema,
-  linkedinLink: toggleOptionSchema,
-  dob: toggleOptionSchema,
-});
+const newJobSchema = z
+  .object({
+    job_name: z.string().min(1, 'Job Name is required'),
+    job_type: z.string().min(1, 'Job Type is required'),
+    job_description: z.string().min(1, 'Job Description is required'),
+    number_of_candidate: z
+      .string()
+      .refine((val) => /^\d+$/.test(val) && Number(val) > 0, {
+        message: 'At least 1 candidate is required',
+      }),
+    min_salary: z
+      .string()
+      .refine(
+        (val) =>
+          /^\d+$/.test(val.replace(/\./g, '')) &&
+          Number(val.replace(/\./g, '')) >= 0,
+        {
+          message: 'Must be a valid positive number',
+        },
+      ),
+    max_salary: z
+      .string()
+      .refine(
+        (val) =>
+          /^\d+$/.test(val.replace(/\./g, '')) &&
+          Number(val.replace(/\./g, '')) >= 0,
+        {
+          message: 'Must be a valid positive number',
+        },
+      ),
+
+    full_name: toggleOptionSchema,
+    photo_profile: toggleOptionSchema,
+    gender: toggleOptionSchema,
+    domicile: toggleOptionSchema,
+    email: toggleOptionSchema,
+    phone_number: toggleOptionSchema,
+    linkedin_link: toggleOptionSchema,
+    date_of_birth: toggleOptionSchema,
+  })
+  .refine(
+    (data) => {
+      const min = Number(data.min_salary.replace(/\./g, ''));
+      const max = Number(data.max_salary.replace(/\./g, ''));
+      return min <= max;
+    },
+    {
+      message: 'Minimum salary cannot be higher than maximum salary',
+      path: ['min_salary'],
+    },
+  )
+  .refine(
+    (data) => {
+      const min = Number(data.min_salary.replace(/\./g, ''));
+      const max = Number(data.max_salary.replace(/\./g, ''));
+      return max >= min;
+    },
+    {
+      message: 'Maximum salary cannot be lower than minimum salary',
+      path: ['max_salary'],
+    },
+  );
 
 type NewJobData = z.infer<typeof newJobSchema>;
 
+// Styled components
 const Container = styled(Stack)({
   height: '85vh',
   width: 900,
   borderRadius: 10,
   backgroundColor: '#fff',
-  boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.1)',
+  boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
   outline: 'none',
 });
 
 const ModalHeaderContainer = styled(Stack)({
   height: 76,
-  paddingLeft: 24,
-  paddingRight: 24,
+  padding: '0 24px',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -56,15 +107,12 @@ const ModalBodyContainer = styled(Stack)({
   padding: '16px 24px',
   gap: 16,
   overflowY: 'scroll',
-  '&::-webkit-scrollbar': {
-    display: 'none',
-  },
+  '&::-webkit-scrollbar': { display: 'none' },
   scrollbarWidth: 'none',
   msOverflowStyle: 'none',
 });
 
 const SalaryContainer = styled(Stack)({
-  height: 128,
   paddingTop: 24,
   gap: 16,
   borderTop: `1px dashed ${Colors.neutral[40]}`,
@@ -80,8 +128,7 @@ const ConfigContainer = styled(Stack)({
 const ModalFooterContainer = styled(Stack)({
   height: 80,
   width: '100%',
-  paddingLeft: 24,
-  paddingRight: 24,
+  padding: '0 24px',
   flexDirection: 'row-reverse',
   alignItems: 'center',
   borderTop: `1px solid ${Colors.neutral[40]}`,
@@ -89,34 +136,82 @@ const ModalFooterContainer = styled(Stack)({
 });
 
 const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
-  const { control, handleSubmit } = useForm<NewJobData>({
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    setFocus,
+    formState: { errors },
+  } = useForm<NewJobData>({
     resolver: zodResolver(newJobSchema),
     defaultValues: {
-      fullName: 'mandatory',
-      profilePicture: 'mandatory',
+      job_name: '',
+      job_type: dropdownJobTypeOptions[0].value,
+      job_description: '',
+      number_of_candidate: '1',
+      min_salary: '',
+      max_salary: '',
+      full_name: 'mandatory',
+      photo_profile: 'mandatory',
       gender: 'mandatory',
       domicile: 'mandatory',
       email: 'mandatory',
-      phoneNumber: 'mandatory',
-      linkedinLink: 'mandatory',
-      dob: 'mandatory',
+      phone_number: 'mandatory',
+      linkedin_link: 'mandatory',
+      date_of_birth: 'mandatory',
     },
+    mode: 'onBlur',
   });
 
-  const onSubmit = (data: NewJobData) => {
-    console.log('Submitted Job Config:', data);
+  const numberOfCandidates = watch('number_of_candidate');
+  const minSalary = watch('min_salary');
+  const maxSalary = watch('max_salary');
+
+  const formatCurrency = (value: string) => {
+    const numeric = value.replace(/\D/g, '');
+    if (!numeric) return '';
+    return numeric.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
+
+  const handleCurrencyChange = (
+    field: 'min_salary' | 'max_salary',
+    value: string,
+  ) => {
+    setValue(field, formatCurrency(value));
+  };
+
+  const handleNumberChange = (value: string) => {
+    setValue('number_of_candidate', value.replace(/\D/g, ''));
+  };
+
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
+  const onSubmit = (data: NewJobData) => {
+    console.log('Submitted Job Config:', {
+      ...data,
+      number_of_candidate: Number(data.number_of_candidate),
+      min_salary: Number(data.min_salary),
+      max_salary: Number(data.max_salary),
+    });
+  };
+
+  const handleFormSubmit = handleSubmit(onSubmit, (formErrors) => {
+    const firstErrorField = Object.keys(formErrors)[0] as keyof NewJobData;
+    setFocus(firstErrorField);
+  });
 
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       slotProps={{
-        backdrop: {
-          sx: {
-            backgroundColor: 'rgba(29, 31, 32, 0.5)',
-          },
-        },
+        backdrop: { sx: { backgroundColor: 'rgba(29,31,32,0.5)' } },
       }}
     >
       <Stack
@@ -125,17 +220,12 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
         sx={{ height: '100vh' }}
       >
         <Container>
+          {/* Header */}
           <ModalHeaderContainer>
             <Text size={16} bold>
               Job Opening
             </Text>
-            <IconButton
-              onClick={onClose}
-              sx={{
-                margin: 0,
-                padding: 0,
-              }}
-            >
+            <IconButton onClick={handleClose} sx={{ p: 0 }}>
               <XMarkIcon
                 style={{
                   width: 24,
@@ -146,80 +236,188 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
               />
             </IconButton>
           </ModalHeaderContainer>
+
+          {/* Body */}
           <ModalBodyContainer>
-            {/* jobName */}
-            <TextInputWrapper label="Job Name" required>
-              <TextInput placeholder="Ex. Front End Engineer" />
+            {/* Job Name */}
+            <TextInputWrapper
+              label="Job Name"
+              required
+              bottomDescription={
+                errors.job_name && (
+                  <Text size={12} color={Colors.danger.main}>
+                    {errors.job_name.message}
+                  </Text>
+                )
+              }
+            >
+              <TextInput
+                placeholder="Ex. Front End Engineer"
+                {...register('job_name')}
+              />
             </TextInputWrapper>
-            {/* jobType */}
-            <TextInputWrapper label="Job Type" required>
-              <Dropdown options={dropdownJobTypeOptions} />
+
+            {/* Job Type */}
+            <TextInputWrapper
+              label="Job Type"
+              required
+              bottomDescription={
+                errors.job_type && (
+                  <Text size={12} color={Colors.danger.main}>
+                    {errors.job_type.message}
+                  </Text>
+                )
+              }
+            >
+              <Controller
+                name="job_type"
+                control={control}
+                render={({ field }) => (
+                  <Dropdown
+                    options={dropdownJobTypeOptions}
+                    value={dropdownJobTypeOptions.find(
+                      (o) => o.value === field.value,
+                    )}
+                    onChange={(option) => field.onChange(option.value)}
+                  />
+                )}
+              />
             </TextInputWrapper>
-            {/* jobDescription */}
-            <TextInputWrapper label="Job Description" required>
-              <TextInput placeholder="Ex." multiline rows={4} />
+
+            {/* Job Description */}
+            <TextInputWrapper
+              label="Job Description"
+              required
+              bottomDescription={
+                errors.job_description && (
+                  <Text size={12} color={Colors.danger.main}>
+                    {errors.job_description.message}
+                  </Text>
+                )
+              }
+            >
+              <TextInput
+                placeholder="Ex. Description"
+                multiline
+                rows={4}
+                {...register('job_description')}
+              />
             </TextInputWrapper>
-            {/* candidateCount */}
-            <TextInputWrapper label="Number of Candidate Needed">
-              <TextInput placeholder="Ex. 2" />
+
+            {/* Number of Candidates */}
+            <TextInputWrapper
+              label="Number of Candidate Needed"
+              bottomDescription={
+                errors.number_of_candidate && (
+                  <Text size={12} color={Colors.danger.main}>
+                    {errors.number_of_candidate.message}
+                  </Text>
+                )
+              }
+            >
+              <TextInput
+                type="text"
+                placeholder="1"
+                {...register('number_of_candidate')}
+                value={numberOfCandidates}
+                onChange={(e) => handleNumberChange(e.target.value)}
+              />
             </TextInputWrapper>
+
+            {/* Salary */}
             <SalaryContainer>
               <Text size={12} color={Colors.neutral[90]}>
                 Job Salary
               </Text>
               <Stack
-                sx={{
-                  flexDirection: 'row',
-                  gap: '16px',
-                  alignItems: 'end',
-                }}
+                sx={{ flexDirection: 'row', gap: '16px', alignItems: 'start' }}
               >
                 <TextInputWrapper
-                  label="Number of Candidate Needed"
-                  containerStyle={{
-                    flexGrow: 1,
-                  }}
+                  label="Minimum Estimated Salary"
+                  containerStyle={{ width: '50%' }}
+                  bottomDescription={
+                    errors.min_salary && (
+                      <Text size={12} color={Colors.danger.main}>
+                        {errors.min_salary.message}
+                      </Text>
+                    )
+                  }
                 >
-                  <TextInput placeholder="Ex. 2" />
+                  <TextInput
+                    type="text"
+                    placeholder="100.000"
+                    {...register('min_salary')}
+                    value={minSalary}
+                    onChange={(e) =>
+                      handleCurrencyChange('min_salary', e.target.value)
+                    }
+                    startAdornment={
+                      <Text size={14} bold sx={{ pr: '4px' }}>
+                        Rp
+                      </Text>
+                    }
+                  />
                 </TextInputWrapper>
+
                 <Stack
-                  style={{
-                    width: 16,
-                    height: 1,
+                  sx={{
+                    width: '16px',
+                    height: '1px',
                     backgroundColor: Colors.neutral[40],
-                    marginBottom: 20,
+                    marginBottom:
+                      errors.max_salary?.message || errors.min_salary?.message
+                        ? '48px'
+                        : '20px',
+                    placeSelf: 'end',
                   }}
                 />
+
                 <TextInputWrapper
-                  label="Number of Candidate Needed"
-                  containerStyle={{
-                    flexGrow: 1,
-                  }}
+                  label="Maximum Estimated Salary"
+                  containerStyle={{ width: '50%' }}
+                  bottomDescription={
+                    errors.max_salary && (
+                      <Text size={12} color={Colors.danger.main}>
+                        {errors.max_salary.message}
+                      </Text>
+                    )
+                  }
                 >
-                  <TextInput placeholder="Ex. 2" />
+                  <TextInput
+                    type="text"
+                    placeholder="200.000"
+                    {...register('max_salary')}
+                    value={maxSalary}
+                    onChange={(e) =>
+                      handleCurrencyChange('max_salary', e.target.value)
+                    }
+                    startAdornment={
+                      <Text size={14} bold sx={{ pr: '4px' }}>
+                        Rp
+                      </Text>
+                    }
+                  />
                 </TextInputWrapper>
               </Stack>
             </SalaryContainer>
+
+            {/* Config Form */}
             <ConfigContainer>
               <Text size={14} bold>
                 Minimum Profile Information Required
               </Text>
-              <Stack
-                sx={{
-                  padding: '8px',
-                  gap: '4px',
-                }}
-              >
+              <Stack sx={{ p: '8px', gap: '4px' }}>
                 {configItem.map((item) => (
                   <Controller
                     key={item.key}
                     control={control}
-                    name={item.key}
+                    name={item.key as keyof NewJobData}
                     render={({ field }) => (
                       <ConfigFormApply
                         title={item.title}
-                        value={field.value}
-                        onChange={field.onChange}
+                        value={field.value as 'mandatory' | 'optional' | 'off'}
+                        onChange={(val) => field.onChange(val)}
+                        disabled={item.disabled}
                       />
                     )}
                   />
@@ -227,14 +425,14 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
               </Stack>
             </ConfigContainer>
           </ModalBodyContainer>
+
+          {/* Footer */}
           <ModalFooterContainer>
             <Button
-              onClick={handleSubmit(onSubmit)}
+              onClick={handleFormSubmit}
               sizeVariant="medium"
               colorVariant="primary"
-              sx={{
-                width: 'auto',
-              }}
+              sx={{ width: 'auto' }}
             >
               <Text size={14}>Publish Job</Text>
             </Button>
