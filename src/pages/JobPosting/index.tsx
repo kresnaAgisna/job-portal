@@ -5,7 +5,11 @@ import { Colors } from '../../constants/color';
 import EmptyState from './components/EmptyState';
 import CreateJobCard from './components/CreateJobCard';
 import ModalCreateJob from './components/ModalCreateJob';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchJobList, selectJobPostingState } from './jobPostingSlice';
+import { useAppDispatch } from '../../global/redux/store';
+import { useSelector } from 'react-redux';
+import { CustomScrollbar } from '../../components/atom';
 
 const Container = styled(Stack)({
   flexDirection: 'row',
@@ -17,11 +21,17 @@ const Container = styled(Stack)({
 });
 
 function JobPosting() {
+  const dispatch = useAppDispatch();
+  const { jobs, loading } = useSelector(selectJobPostingState);
   const [openModal, setOpenModal] = useState(false);
 
   const toggleModalCreateJob = () => {
     setOpenModal((prev) => !prev);
   };
+
+  useEffect(() => {
+    dispatch(fetchJobList());
+  }, []);
 
   return (
     <Container>
@@ -39,7 +49,18 @@ function JobPosting() {
             />
           }
         />
-        <EmptyState onClick={toggleModalCreateJob} />
+        {jobs.length === 0 ? (
+          <EmptyState onClick={toggleModalCreateJob} loading={loading} />
+        ) : (
+          <CustomScrollbar
+            style={{
+              height: 500,
+              paddingRight: '16px',
+            }}
+          >
+            {JSON.stringify(jobs, null, 4)}
+          </CustomScrollbar>
+        )}
       </Stack>
       <Stack flex={1}>
         <CreateJobCard onClick={toggleModalCreateJob} />

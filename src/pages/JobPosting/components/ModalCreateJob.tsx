@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -10,6 +10,13 @@ import TextInputWrapper from '../../../components/molecules/TextInputWrapper';
 import Dropdown from '../../../components/molecules/Dropdown';
 import { configItem, dropdownJobTypeOptions } from '../constant';
 import ConfigFormApply from './ConfigFormApply';
+import { useAppDispatch } from '../../../global/redux/store';
+import {
+  postCreateNewJob,
+  resetJobPostingState,
+  selectJobPostingState,
+} from '../jobPostingSlice';
+import { useSelector } from 'react-redux';
 
 interface ModalCreateJobProps {
   open: boolean;
@@ -81,7 +88,7 @@ const newJobSchema = z
     },
   );
 
-type NewJobData = z.infer<typeof newJobSchema>;
+export type NewJobData = z.infer<typeof newJobSchema>;
 
 // Styled components
 const Container = styled(Stack)({
@@ -136,6 +143,8 @@ const ModalFooterContainer = styled(Stack)({
 });
 
 const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
+  const dispatch = useAppDispatch();
+  const { loading, successCreate } = useSelector(selectJobPostingState);
   const {
     control,
     register,
@@ -163,7 +172,7 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
       linkedin_link: 'mandatory',
       date_of_birth: 'mandatory',
     },
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   const numberOfCandidates = watch('number_of_candidate');
@@ -193,18 +202,20 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
   };
 
   const onSubmit = (data: NewJobData) => {
-    console.log('Submitted Job Config:', {
-      ...data,
-      number_of_candidate: Number(data.number_of_candidate),
-      min_salary: Number(data.min_salary),
-      max_salary: Number(data.max_salary),
-    });
+    dispatch(postCreateNewJob(data));
   };
 
   const handleFormSubmit = handleSubmit(onSubmit, (formErrors) => {
     const firstErrorField = Object.keys(formErrors)[0] as keyof NewJobData;
     setFocus(firstErrorField);
   });
+
+  useEffect(() => {
+    if (successCreate) {
+      handleClose();
+      dispatch(resetJobPostingState());
+    }
+  }, [successCreate]);
 
   return (
     <Modal
@@ -433,6 +444,7 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
               sizeVariant="medium"
               colorVariant="primary"
               sx={{ width: 'auto' }}
+              loading={loading}
             >
               <Text size={14}>Publish Job</Text>
             </Button>
