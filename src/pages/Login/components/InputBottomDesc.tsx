@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack } from '@mui/material';
-import { ExclamationTriangleIcon, CheckIcon } from '@heroicons/react/20/solid';
+import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { Colors } from '../../../constants/color';
 import { Text } from '../../../components/atom';
 

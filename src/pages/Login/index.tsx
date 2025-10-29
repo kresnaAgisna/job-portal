@@ -45,7 +45,7 @@ export type LoginData = z.infer<typeof loginSchema>;
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { errorLogin, loading, successLogin } = useSelector(selectLoginState);
+  const { errorLogin, loading } = useSelector(selectLoginState);
   const {
     register,
     handleSubmit,

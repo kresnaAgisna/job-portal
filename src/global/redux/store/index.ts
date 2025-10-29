@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import registerSlice from '../../../pages/Register/registerSlice';
 import loginSlice from '../../../pages/Login/loginSlice';
 
