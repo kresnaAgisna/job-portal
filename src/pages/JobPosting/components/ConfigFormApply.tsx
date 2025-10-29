@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Stack, Button, styled } from '@mui/material';
 import { Colors } from '../../../constants/color';
 import { Text } from '../../../components/atom';
+
+const Container = styled(Stack)({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  height: 48,
+  alignItems: 'center',
+  borderBottom: `1px solid ${Colors.neutral[40]}`,
+  paddingBottom: 8,
+});
 
 const ToggleButton = styled(Button)<{ active?: boolean; disabled?: boolean }>(
   ({ active, disabled }) => ({
@@ -22,16 +31,18 @@ const ToggleButton = styled(Button)<{ active?: boolean; disabled?: boolean }>(
   }),
 );
 
-interface CustomRadioProps {
+interface ConfigFormApplyProps {
   value: 'mandatory' | 'optional' | 'off';
   onChange: (value: 'mandatory' | 'optional' | 'off') => void;
   disabled?: number[];
+  title: string;
 }
 
-const CustomRadio: React.FC<CustomRadioProps> = ({
+const ConfigFormApply: React.FC<ConfigFormApplyProps> = ({
   value,
   onChange,
   disabled = [],
+  title,
 }) => {
   const options: { label: string; key: 'mandatory' | 'optional' | 'off' }[] = [
     { label: 'Mandatory', key: 'mandatory' },
@@ -40,19 +51,24 @@ const CustomRadio: React.FC<CustomRadioProps> = ({
   ];
 
   return (
-    <Stack direction="row" spacing={1}>
-      {options.map((option, index) => (
-        <ToggleButton
-          key={option.key}
-          active={value === option.key}
-          disabled={disabled.includes(index)}
-          onClick={() => onChange(option.key)}
-        >
-          <Text size={14}>{option.label}</Text>
-        </ToggleButton>
-      ))}
-    </Stack>
+    <Container>
+      <Text size={14} color={Colors.neutral[90]}>
+        {title}
+      </Text>
+      <Stack direction="row" spacing={1}>
+        {options.map((option, index) => (
+          <ToggleButton
+            key={option.key}
+            active={value === option.key}
+            disabled={disabled.includes(index)}
+            onClick={() => onChange(option.key)}
+          >
+            <Text size={14}>{option.label}</Text>
+          </ToggleButton>
+        ))}
+      </Stack>
+    </Container>
   );
 };
 
-export default CustomRadio;
+export default ConfigFormApply;

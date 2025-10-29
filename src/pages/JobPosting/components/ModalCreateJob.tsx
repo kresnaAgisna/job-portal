@@ -1,18 +1,36 @@
 // src/components/ModalCreateJob.tsx
 import React from 'react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
 import { IconButton, Modal, Stack, styled } from '@mui/material';
 import { Colors } from '../../../constants/color';
 import { Button, Text, TextInput } from '../../../components/atom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import CustomRadio from './CustomRadio';
 import TextInputWrapper from '../../../components/molecules/TextInputWrapper';
 import Dropdown from '../../../components/molecules/Dropdown';
-import { dropdownJobTypeOptions } from '../constant';
+import { configItem, dropdownJobTypeOptions } from '../constant';
+import ConfigFormApply from './ConfigFormApply';
 
 interface ModalCreateJobProps {
   open: boolean;
   onClose: () => void;
 }
+
+const toggleOptionSchema = z.enum(['mandatory', 'optional', 'off']);
+
+const newJobSchema = z.object({
+  fullName: toggleOptionSchema,
+  profilePicture: toggleOptionSchema,
+  gender: toggleOptionSchema,
+  domicile: toggleOptionSchema,
+  email: toggleOptionSchema,
+  phoneNumber: toggleOptionSchema,
+  linkedinLink: toggleOptionSchema,
+  dob: toggleOptionSchema,
+});
+
+type NewJobData = z.infer<typeof newJobSchema>;
 
 const Container = styled(Stack)({
   height: '85vh',
@@ -71,6 +89,24 @@ const ModalFooterContainer = styled(Stack)({
 });
 
 const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
+  const { control, handleSubmit } = useForm<NewJobData>({
+    resolver: zodResolver(newJobSchema),
+    defaultValues: {
+      fullName: 'mandatory',
+      profilePicture: 'mandatory',
+      gender: 'mandatory',
+      domicile: 'mandatory',
+      email: 'mandatory',
+      phoneNumber: 'mandatory',
+      linkedinLink: 'mandatory',
+      dob: 'mandatory',
+    },
+  });
+
+  const onSubmit = (data: NewJobData) => {
+    console.log('Submitted Job Config:', data);
+  };
+
   return (
     <Modal
       open={open}
@@ -168,10 +204,32 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
               <Text size={14} bold>
                 Minimum Profile Information Required
               </Text>
+              <Stack
+                sx={{
+                  padding: '8px',
+                  gap: '4px',
+                }}
+              >
+                {configItem.map((item) => (
+                  <Controller
+                    key={item.key}
+                    control={control}
+                    name={item.key}
+                    render={({ field }) => (
+                      <ConfigFormApply
+                        title={item.title}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                ))}
+              </Stack>
             </ConfigContainer>
           </ModalBodyContainer>
           <ModalFooterContainer>
             <Button
+              onClick={handleSubmit(onSubmit)}
               sizeVariant="medium"
               colorVariant="primary"
               sx={{

@@ -1,73 +1,88 @@
-# React + TypeScript + Vite
+# 💼 Job Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **mini job portal web application** built with **React 19** and **TypeScript**.  
+Admins can log in and create job postings, while users can view and apply through a **dynamic form** based on admin configuration.  
+The project runs on **Node.js v20.19.2**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧩 Project Structure
 
-## React Compiler
+All main code lives under the `src` directory:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+src/
+├── assets/
+├── components/
+├── constants/
+├── global/
+├── pages/
+└── routes/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🗒️ Notes
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **global** — contains reusable global logic such as configuration, API setup, or global providers.
+- **pages** — holds the main pages like login, dashboard, and job posting forms.
+- **routes** — defines navigation paths and route-level configurations.
+- **components** — stores shared UI elements such as buttons, inputs, and modals.
+- **constants** — central place for colors, spacing, enums, and static values.
+- **assets** — includes icons, images, and fonts used across the app.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+This structure keeps the project modular, organized, and scalable.
+
+---
+
+## ⚙️ Setup
+
+Make sure you have **Node.js v20.19.2** installed.
+
+1. Navigate to the project directory:
+   `cd your-project-folder`
+
+2. Install dependencies:
+   `npm install`
+
+3. Run the development server:
+   `npm run dev`
+
+---
+
+## 🧠 Tech Stack
+
+- **React 19** – UI library
+- **Vite** – Fast build and development environment
+- **TypeScript** – Type-safe development
+- **MUI** – Modern UI components
+- **React Hook Form + Zod** – Form management and schema validation
+- **Redux Toolkit** – Global state management
+- **React Router** – Routing and navigation
+- **ESLint + Prettier** – Code quality and formatting
+
+---
+
+## 🚀 Features
+
+- 🔐 **Admin login** for managing job postings
+- 🧩 **Dynamic job posting form** that adapts to admin-defined configurations
+- ⚙️ **Validation** with React Hook Form + Zod
+- 🎨 **Responsive UI** built with MUI
+- 🧠 **Centralized state** with Redux Toolkit
+- ⚡ **Optimized development** workflow with Vite
+
+---
+
+## 🧾 Scripts
+
+- `npm run dev` — Start the development server
+- `npm run build` — Build the project for production
+- `npm run preview` — Preview the production build
+- `npm run lint` — Run ESLint checks
+
+---
+
+_Last updated: October 2025_
+
+```
+
 ```

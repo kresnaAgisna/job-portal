@@ -5,3 +5,38 @@ export const dropdownJobTypeOptions = [
   { label: 'Internship', value: 'internship' },
   { label: 'Freelance', value: 'freelance' },
 ];
+
+export const configItem = [
+  {
+    title: 'Full name',
+    key: 'fullName',
+  },
+  {
+    title: 'Photo profile',
+    key: 'profilePicture',
+  },
+  {
+    title: 'Gender',
+    key: 'gender',
+  },
+  {
+    title: 'Domicile',
+    key: 'domicile',
+  },
+  {
+    title: 'Email',
+    key: 'email',
+  },
+  {
+    title: 'Phone number',
+    key: 'phoneNumber',
+  },
+  {
+    title: 'Linkedin link',
+    key: 'linkedinLink',
+  },
+  {
+    title: 'Date of birth',
+    key: 'dob',
+  },
+] as const;
