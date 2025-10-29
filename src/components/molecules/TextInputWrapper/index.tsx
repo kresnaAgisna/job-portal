@@ -7,6 +7,8 @@ interface TextInputWrapperProps {
   children: React.ReactNode;
   label: string;
   bottomDescription?: React.ReactNode;
+  required?: boolean;
+  containerStyle?: CSSProperties;
 }
 
 const Container = styled(Stack)({
@@ -17,11 +19,18 @@ const TextInputWrapper: React.FC<TextInputWrapperProps> = ({
   children,
   label,
   bottomDescription,
+  required,
+  containerStyle,
 }) => {
   return (
-    <Container>
+    <Container sx={containerStyle}>
       <Text size={12} color={Colors.neutral[90]}>
         {label}
+        {required ? (
+          <Text size={12} color={Colors.danger.main} component="span">
+            *
+          </Text>
+        ) : null}
       </Text>
       {children}
       {bottomDescription ? bottomDescription : null}

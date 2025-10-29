@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Logo from './assets/logo.svg?react';
-import GoogleLogo from './assets/google-logo.svg?react';
+import Logo from '../../assets/rakamin-logo.svg?react';
+import GoogleLogo from '../../assets/google-logo.svg?react';
 import KeyIcon from './assets/key-icon.svg?react';
 import { Colors } from '../../constants/color';
 import Divider from '../../components/molecules/Divider';

@@ -4,6 +4,10 @@ import Button from '../../../components/atom/Button';
 import cardBackground from '../assets/card-background.jpg';
 import { Colors } from '../../../constants/color';
 
+type CreateJobCardProps = {
+  onClick: () => void;
+};
+
 const CardContainer = styled(Stack)({
   width: 300,
   borderRadius: 16,
@@ -18,7 +22,7 @@ const CardContainer = styled(Stack)({
   backgroundRepeat: 'no-repeat',
 });
 
-const CreateJobCard = () => {
+const CreateJobCard: React.FC<CreateJobCardProps> = ({ onClick }) => {
   return (
     <CardContainer>
       <Stack alignItems="center">
@@ -29,7 +33,7 @@ const CreateJobCard = () => {
           Create jobs, invite, and hire with ease
         </Text>
       </Stack>
-      <Button sizeVariant="large">
+      <Button sizeVariant="large" onClick={onClick}>
         <Text size={16} bold>
           Create a new job
         </Text>

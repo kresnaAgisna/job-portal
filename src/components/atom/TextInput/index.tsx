@@ -18,9 +18,9 @@ const StyledTextInput = styled(InputBase, {
       prop as string,
     ),
 })<CustomTextInputProps>(
-  ({ placeholderColor, borderColor, textColor, focusColor }) => ({
+  ({ placeholderColor, borderColor, textColor, focusColor, multiline }) => ({
     width: '100%',
-    height: 40,
+    height: multiline ? undefined : 40,
     borderRadius: 8,
     borderWidth: 2,
     borderStyle: 'solid',
