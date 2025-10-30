@@ -12,6 +12,7 @@ import { configItem, dropdownJobTypeOptions } from '../constant';
 import ConfigFormApply from './ConfigFormApply';
 import { useAppDispatch } from '../../../global/redux/store';
 import {
+  fetchJobList,
   postCreateNewJob,
   resetJobPostingState,
   selectJobPostingState,
@@ -214,6 +215,7 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
     if (successCreate) {
       handleClose();
       dispatch(resetJobPostingState());
+      dispatch(fetchJobList());
     }
   }, [successCreate]);
 

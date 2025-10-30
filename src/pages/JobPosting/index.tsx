@@ -10,6 +10,7 @@ import { fetchJobList, selectJobPostingState } from './jobPostingSlice';
 import { useAppDispatch } from '../../global/redux/store';
 import { useSelector } from 'react-redux';
 import { CustomScrollbar } from '../../components/atom';
+import JobCard from './components/JobCard';
 
 const Container = styled(Stack)({
   flexDirection: 'row',
@@ -56,9 +57,12 @@ function JobPosting() {
             style={{
               height: 500,
               paddingRight: '16px',
+              paddingBottom: '16px',
             }}
           >
-            {JSON.stringify(jobs, null, 4)}
+            {jobs.map((job) => (
+              <JobCard job={job} />
+            ))}
           </CustomScrollbar>
         )}
       </Stack>

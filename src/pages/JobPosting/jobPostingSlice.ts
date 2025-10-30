@@ -3,12 +3,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../global/redux/store';
 import { NewJobData } from './components/ModalCreateJob';
 import { safeParseLocalStorage } from '../../global/helpers/safeParseStorage';
+import { ApplicationForm } from './types';
 
 interface JobPostingState {
   loading: boolean;
   error?: string;
   successCreate: boolean;
-  jobs: any[];
+  jobs: ApplicationForm[];
 }
 
 const initialState: JobPostingState = {
@@ -41,11 +42,12 @@ export const postCreateNewJob = createAsyncThunk<
       'date_of_birth',
     ];
 
-    const applicationForm = {
+    const applicationForm: ApplicationForm = {
       application_form: {
         sections: [
           {
             author,
+            createdDate: new Date(),
             jobName: jobData.job_name,
             jobType: jobData.job_type,
             jobDescription: jobData.job_description,
