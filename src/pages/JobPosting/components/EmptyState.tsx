@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import EmptyIcon from '../assets/empty.svg?react';
 import Text from '../../../components/atom/Text';
 import Button from '../../../components/atom/Button';
-import Loading from './Loading';
+import Loading from '../../../components/molecules/Loading';
 
 interface EmptyStateProps {
   onClick: () => void;

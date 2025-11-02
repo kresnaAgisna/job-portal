@@ -5,9 +5,9 @@ import 'simplebar-react/dist/simplebar.min.css';
 import { Colors } from '../../../constants/color';
 import { CSSProperties } from '@mui/material';
 
-interface CustomScrollbarProps {
+interface CustomScrollbarProps extends React.ComponentProps<typeof SimpleBar> {
   children: React.ReactNode;
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 
 const StyledSimpleBar = styled(SimpleBar)(() => ({
@@ -37,9 +37,10 @@ const StyledSimpleBar = styled(SimpleBar)(() => ({
 export default function CustomScrollbar({
   children,
   style,
+  ...props
 }: CustomScrollbarProps) {
   return (
-    <StyledSimpleBar autoHide={false} style={{ ...style }}>
+    <StyledSimpleBar autoHide={false} style={{ ...style }} {...props}>
       {children}
     </StyledSimpleBar>
   );

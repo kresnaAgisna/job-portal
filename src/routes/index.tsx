@@ -4,11 +4,17 @@ import Register from '../pages/Register';
 import BeforeAuthLayout from './layout/beforeAuth';
 import Login from '../pages/Login';
 import JobPosting from '../pages/JobPosting';
+import JobList from '../pages/JobList';
 
 const router = createBrowserRouter([
   {
     element: <BeforeAuthLayout />,
     children: [
+      {
+        path: '/',
+        element: <JobList />,
+        handle: { title: 'Job Postings' },
+      },
       {
         path: '/register',
         element: <Register />,

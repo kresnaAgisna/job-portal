@@ -35,7 +35,7 @@ export default function AfterAuthLayout() {
   const title = current?.handle?.title ?? 'Default Title';
 
   if (!userData) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -54,7 +54,12 @@ export default function AfterAuthLayout() {
           }}
         >
           <ArrowRightCircleIcon
-            style={{ width: 20, height: 20, strokeWidth: 2 }}
+            style={{
+              width: 20,
+              height: 20,
+              strokeWidth: 2,
+              marginRight: '4px',
+            }}
             color={Colors.neutral[100]}
           />
           <Text

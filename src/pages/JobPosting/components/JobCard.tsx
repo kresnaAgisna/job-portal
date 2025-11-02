@@ -2,7 +2,7 @@ import { Stack, styled } from '@mui/material';
 import Tag from '../../../components/molecules/Tag';
 import { Button, Text } from '../../../components/atom';
 import { Colors } from '../../../constants/color';
-import { ApplicationForm } from '../types';
+import { ApplicationForm } from '../../../global/types/applicationType';
 
 const CardContainer = styled(Stack)({
   boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.1)',

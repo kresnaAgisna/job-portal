@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../global/redux/store';
 import { NewJobData } from './components/ModalCreateJob';
 import { safeParseLocalStorage } from '../../global/helpers/safeParseStorage';
-import { ApplicationForm } from './types';
+import { ApplicationForm } from '../../global/types/applicationType';
 
 interface JobPostingState {
   loading: boolean;

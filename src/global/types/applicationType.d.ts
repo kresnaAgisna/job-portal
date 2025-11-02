@@ -1,4 +1,4 @@
-import { NewJobData } from '../components/ModalCreateJob';
+import { NewJobData } from '../../pages/JobPosting/components/ModalCreateJob';
 
 type Field = {
   key: keyof NewJobData;
