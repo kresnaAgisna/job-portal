@@ -5,7 +5,7 @@ import DetaiLogo from './assets/detail-logo.svg?react';
 import { useNavigate } from 'react-router-dom';
 import JobListCard from './components/JobListCard';
 import Loading from '../../components/molecules/Loading';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../global/redux/store';
 import {
   fetchJobList,
@@ -15,6 +15,7 @@ import {
 import { useSelector } from 'react-redux';
 import { generateJobId } from './helpers';
 import EmptyState from './components/EmptyState';
+import ModalApplyJob from './components/ModalApplyJob';
 
 const Container = styled(Stack)({
   height: '100vh',
@@ -65,8 +66,9 @@ const JobDetailHeaderContainer = styled(Stack)({
 
 function JobList() {
   const navigate = useNavigate();
-  const { jobs, loading, selectedJob } = useSelector(selectJobListState);
   const dispatch = useAppDispatch();
+  const { jobs, loading, selectedJob } = useSelector(selectJobListState);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     dispatch(fetchJobList());
@@ -151,7 +153,7 @@ function JobList() {
                       {selectedJob.jobName}
                     </Text>
                     <Text size={12} color={Colors.neutral[60]}>
-                      Company Name
+                      [Company Name]
                     </Text>
                   </Stack>
                 </Stack>
@@ -159,6 +161,9 @@ function JobList() {
                   colorVariant="secondary"
                   sx={{
                     width: 'fit-content',
+                  }}
+                  onClick={() => {
+                    setOpenModal(true);
                   }}
                 >
                   Apply
@@ -172,6 +177,12 @@ function JobList() {
         ) : null}
         {!loading && !selectedJob ? <EmptyState /> : null}
       </ContentContainer>
+      <ModalApplyJob
+        open={openModal}
+        onClose={() => {
+          setOpenModal(false);
+        }}
+      />
     </Container>
   );
 }

@@ -68,7 +68,7 @@ const JobListCard = ({ active = false, onClick, job }: JobListCardProps) => {
             {jobName}
           </Text>
           <Text size={10} color={Colors.neutral[60]}>
-            Company Name
+            [Company Name]
           </Text>
         </Stack>
       </CardHeaderContainer>
@@ -79,7 +79,7 @@ const JobListCard = ({ active = false, onClick, job }: JobListCardProps) => {
             <MapPinIcon width={16} height={16} color={Colors.neutral[80]} />
           </Icon>
           <Text size={12} color={Colors.neutral[80]}>
-            Jakarta Selatan
+            [Location]
           </Text>
         </InfoRow>
 

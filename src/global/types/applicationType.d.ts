@@ -1,13 +1,21 @@
-import { NewJobData } from '../../pages/JobPosting/components/ModalCreateJob';
+export type FieldKey =
+  | 'full_name'
+  | 'photo_profile'
+  | 'gender'
+  | 'domicile'
+  | 'email'
+  | 'phone_number'
+  | 'linkedin_link'
+  | 'date_of_birth';
 
-type Field = {
-  key: keyof NewJobData;
+export type Field = {
+  key: FieldKey;
   validation: {
-    required: any;
+    required: 'mandatory' | 'optional' | 'off';
   };
 };
 
-type ApplicationSection = {
+export type ApplicationSection = {
   author: string;
   createdDate: Date;
   jobName: string;

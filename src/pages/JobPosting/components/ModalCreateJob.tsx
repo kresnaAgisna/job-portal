@@ -57,14 +57,14 @@ const newJobSchema = z
         },
       ),
 
-    full_name: toggleOptionSchema,
     photo_profile: toggleOptionSchema,
+    full_name: toggleOptionSchema,
+    date_of_birth: toggleOptionSchema,
     gender: toggleOptionSchema,
     domicile: toggleOptionSchema,
-    email: toggleOptionSchema,
     phone_number: toggleOptionSchema,
+    email: toggleOptionSchema,
     linkedin_link: toggleOptionSchema,
-    date_of_birth: toggleOptionSchema,
   })
   .refine(
     (data) => {
@@ -164,14 +164,14 @@ const ModalCreateJob: React.FC<ModalCreateJobProps> = ({ open, onClose }) => {
       number_of_candidate: '1',
       min_salary: '',
       max_salary: '',
-      full_name: 'mandatory',
       photo_profile: 'mandatory',
+      full_name: 'mandatory',
+      date_of_birth: 'mandatory',
       gender: 'mandatory',
       domicile: 'mandatory',
-      email: 'mandatory',
       phone_number: 'mandatory',
+      email: 'mandatory',
       linkedin_link: 'mandatory',
-      date_of_birth: 'mandatory',
     },
     mode: 'onChange',
   });

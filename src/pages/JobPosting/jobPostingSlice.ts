@@ -3,7 +3,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../global/redux/store';
 import { NewJobData } from './components/ModalCreateJob';
 import { safeParseLocalStorage } from '../../global/helpers/safeParseStorage';
-import { ApplicationForm } from '../../global/types/applicationType';
+import {
+  ApplicationForm,
+  Field,
+  FieldKey,
+} from '../../global/types/applicationType';
+import { configItem } from './constant';
 
 interface JobPostingState {
   loading: boolean;
@@ -19,7 +24,6 @@ const initialState: JobPostingState = {
   jobs: [],
 };
 
-// Create new job
 export const postCreateNewJob = createAsyncThunk<
   string,
   NewJobData,
@@ -31,16 +35,15 @@ export const postCreateNewJob = createAsyncThunk<
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    const profileFields: (keyof NewJobData)[] = [
-      'full_name',
-      'photo_profile',
-      'gender',
-      'domicile',
-      'email',
-      'phone_number',
-      'linkedin_link',
-      'date_of_birth',
-    ];
+    const orderedFields: Field[] = configItem.map((item) => ({
+      key: item.key as FieldKey,
+      validation: {
+        required: jobData[item.key as keyof NewJobData] as
+          | 'mandatory'
+          | 'optional'
+          | 'off',
+      },
+    }));
 
     const applicationForm: ApplicationForm = {
       application_form: {
@@ -54,16 +57,16 @@ export const postCreateNewJob = createAsyncThunk<
             numberOfCandidates: Number(jobData.number_of_candidate),
             minSalary: Number(jobData.min_salary.replace(/\./g, '')),
             maxSalary: Number(jobData.max_salary.replace(/\./g, '')),
-            fields: profileFields.map((key) => ({
-              key,
-              validation: { required: jobData[key] },
-            })),
+            fields: orderedFields,
           },
         ],
       },
     };
 
-    const existingJobList = safeParseLocalStorage('jobList', [] as any[]);
+    const existingJobList = safeParseLocalStorage(
+      'jobList',
+      [] as ApplicationForm[],
+    );
     existingJobList.push(applicationForm);
     localStorage.setItem('jobList', JSON.stringify(existingJobList));
 
@@ -74,7 +77,7 @@ export const postCreateNewJob = createAsyncThunk<
 });
 
 export const fetchJobList = createAsyncThunk<
-  any[],
+  ApplicationForm[],
   void,
   { rejectValue: string }
 >('jobPosting/fetchJobList', async (_, { rejectWithValue }) => {
@@ -84,7 +87,7 @@ export const fetchJobList = createAsyncThunk<
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const allJobs = safeParseLocalStorage('jobList', [] as any[]);
+    const allJobs = safeParseLocalStorage('jobList', [] as ApplicationForm[]);
     const filteredJobs = allJobs.filter(
       (job) => job.application_form.sections[0].author === userData,
     );
@@ -107,8 +110,8 @@ export const jobPostingSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // postCreateNewJob
     builder
+      // postCreateNewJob
       .addCase(postCreateNewJob.pending, (state) => {
         state.loading = true;
         state.error = undefined;
@@ -122,10 +125,9 @@ export const jobPostingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.successCreate = false;
-      });
+      })
 
-    // fetchJobList
-    builder
+      // fetchJobList
       .addCase(fetchJobList.pending, (state) => {
         state.loading = true;
         state.error = undefined;
@@ -142,7 +144,5 @@ export const jobPostingSlice = createSlice({
 });
 
 export const { resetJobPostingState } = jobPostingSlice.actions;
-
 export const selectJobPostingState = (state: RootState) => state.jobPosting;
-
 export default jobPostingSlice.reducer;
